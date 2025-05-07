@@ -1,6 +1,6 @@
 import streamlit as st
 import mysql.connector
-from openai import OpenAI
+import openai
 import os
 from dotenv import load_dotenv
 import json
@@ -95,7 +95,7 @@ def carregar_prompt():
 
 # Gerar query SQL
 def gerar_query_sql(pergunta, colunas):
-    client = OpenAI(api_key=openai_api_key)
+    openai.api_key = (openai_api_key)
     prompt = carregar_prompt()
 
     instrucoes_adicionais = "\n- " + "\n- ".join(prompt.get("instrucoes_sql", []))
@@ -119,7 +119,7 @@ Gere uma consulta SQL correspondente:
 """
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": prompt.get('model_role', "Você é um assistente de SQL.")},
